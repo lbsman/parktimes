@@ -1,4 +1,7 @@
 const http = require('http');
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
 // include the Themeparks library
 var Themeparks = require("themeparks");
 
@@ -15,8 +18,8 @@ Themeparks.Settings.CacheWaitTimesLength = 120;
 const DisneyWorldMagicKingdom = new Themeparks.Parks.WaltDisneyWorldMagicKingdom();
 const DisneyAnimal = new Themeparks.Parks.WaltDisneyWorldAnimalKingdom();
 
-const hostname = '127.0.0.1';
-const port = 3000;
+// const hostname = '127.0.0.1';
+// const port = 3000;
 var disneyData;
 
 const CheckWaitTimes = () => {
@@ -54,6 +57,14 @@ const CheckWaitTimes = () => {
   
 };
 
+app.get('/', (req, res) => {
+  res.statusCode = 200;
+  // Access wait times by Promise
+  //console.log(disneyData);
+  res.setHeader('Content-Type', 'text/plain');
+  res.end(disneyData);
+});
+
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
   // Access wait times by Promise
@@ -66,7 +77,12 @@ const server = http.createServer((req, res) => {
   
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+app.listen(port, () => {
+  console.log('Started on port ' + port);
   CheckWaitTimes();
 });
+
+// server.listen(port, hostname, () => {
+//   console.log(`Server running at http://${hostname}:${port}/`);
+//   CheckWaitTimes();
+// });
