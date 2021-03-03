@@ -2,6 +2,7 @@ const http = require('http');
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
+const func = require('./func.js');
 // include the Themeparks library
 var Themeparks = require("themeparks");
 
@@ -17,72 +18,53 @@ Themeparks.Settings.CacheWaitTimesLength = 120;
 //  re-creating this every time you require access is very slow, and will fetch data repeatedly for no purpose
 const DisneyWorldMagicKingdom = new Themeparks.Parks.WaltDisneyWorldMagicKingdom();
 const DisneyAnimal = new Themeparks.Parks.WaltDisneyWorldAnimalKingdom();
+const DisneyEpcot = new Themeparks.Parks.WaltDisneyWorldEpcot();
+const DisneyHollywood = new Themeparks.Parks.WaltDisneyWorldHollywoodStudios();
+var wdwData;
 
-// const hostname = '127.0.0.1';
-// const port = 3000;
-var disneyData;
-
-const CheckWaitTimes = () => {
+const wdwTimes = () => {
+  wdwData = `{"parks":[`;
   DisneyWorldMagicKingdom.GetWaitTimes().then((rideTimes) => {
-    disneyData = `{"rides": [`
-      rideTimes.forEach((ride) => {
-        //Grab our ride name
-        var rideName = ride.name.replace('"','').replace('"', '').trim().replace(/(\r\n|\n|\r)/gm, "");
-        //rideName = rideName.replace('"','').replace('"', '').trim().replace(/(\r\n|\n|\r)/gm, "");
-        //Grab our wait time
-        var riWait = ride.waitTime;
-        //if its temporairly unavailable let me know as well
-        if(rideName.indexOf('Temporarily Unavailable') > 0 ){
-          rideName = rideName.replace(' - Temporarily Unavailable', '').trim();
-          riWait = -1;
-        }
-        //console.log(riWait);
-        //If it just doesnt have a time let me know
-        if(riWait == null){
-          riWait = -2;
-        }
-        //Form the main section
-        disneyData += `{"rideName": "${rideName}", "rideWait": "${riWait}"},`
-          //console.log(`${ride.name}: ${ride.waitTime} minutes wait (${ride.status})`);
-      });
-    //Take our last , out 
-    disneyData = disneyData.substring(0, disneyData.length - 1);
-    //Cap everything off
-    disneyData += `]}`;
+    wdwData += func.buildWorld('mk', rideTimes);
   }).catch((error) => {
       console.error(error);
-  }).then(() => {
-      setTimeout(CheckWaitTimes, 1000 * 60 * 5); // refresh every 5 minutes
+  }).then(() => {    
+    DisneyAnimal.GetWaitTimes().then((rideTimes) => {
+      wdwData += func.buildWorld('ak', rideTimes);
+    }).catch((error)=>{
+      console.error(error);
+    }).then(() => {
+      DisneyEpcot.GetWaitTimes().then((rideTimes) => {
+        wdwData += func.buildWorld('ep', rideTimes);
+      }).catch((error) => {
+        console.error(error);
+      }).then(() => {
+        DisneyHollywood.GetWaitTimes().then((rideTimes) => {
+          wdwData += func.buildWorld('hw', rideTimes);
+        }).catch((error) => {
+          console.error(error);
+        }).then(() => {
+          wdwData = func.finalCleanWdw(wdwData);
+          setTimeout(wdwTimes, 1000 * 60 * 5); // refresh every 5 minutes
+        })        
+      });
+    });    
   });
-  
 };
 
-app.get('/', (req, res) => {
+app.get('/wdwtimes', (req, res) => {
   res.statusCode = 200;
   // Access wait times by Promise
   //console.log(disneyData);
   res.setHeader('Content-Type', 'text/plain');
-  res.end(disneyData);
+  res.end(wdwData);
 });
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  // Access wait times by Promise
-    
-    console.log(disneyData);
-    
-
-    res.setHeader('Content-Type', 'text/plain');
-    res.end(disneyData);
-  
+app.use(function(req, res){
+  res.end('Wrong loco');
 });
 
 app.listen(port, () => {
   console.log('Started on port ' + port);
-  CheckWaitTimes();
+  wdwTimes();
 });
-
-// server.listen(port, hostname, () => {
-//   console.log(`Server running at http://${hostname}:${port}/`);
-//   CheckWaitTimes();
-// });
