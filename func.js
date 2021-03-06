@@ -24,24 +24,21 @@ var waitData = (rideTimes) => {
     });
     return tempData;
 };
-var buildWorld = (name, rideTimes) => {
+var buildWorld = (rideTimes) => {
     var tempData = '';
     
-    tempData += `{"${name}":`;
     tempData += `{"rides": [`;
     tempData += waitData(rideTimes);
     //Take our last , out 
     tempData = tempData.substring(0, tempData.length - 1);
-    //Cap everything off
-    tempData += `]}},`;
-
+    tempData = finalCleanWdw(tempData);
     return tempData;
 }
 var finalCleanWdw = (mData) => {
     var tempData = '';
 
     tempData = mData.substring(0, mData.length - 1);
-    tempData += `]}`;
+    tempData += `}]}`;
 
     return tempData;
 

@@ -20,45 +20,84 @@ const DisneyWorldMagicKingdom = new Themeparks.Parks.WaltDisneyWorldMagicKingdom
 const DisneyAnimal = new Themeparks.Parks.WaltDisneyWorldAnimalKingdom();
 const DisneyEpcot = new Themeparks.Parks.WaltDisneyWorldEpcot();
 const DisneyHollywood = new Themeparks.Parks.WaltDisneyWorldHollywoodStudios();
-var wdwData;
 
-const wdwTimes = () => {
-  wdwData = `{"parks":[`;
+var mkData;
+var akData;
+var epData;
+var hstudData;
+
+const mkTimes = () => {
+  mkData = ``;
   DisneyWorldMagicKingdom.GetWaitTimes().then((rideTimes) => {
-    wdwData += func.buildWorld('mk', rideTimes);
+    mkData += func.buildWorld(rideTimes);
   }).catch((error) => {
-      console.error(error);
+    console.error(error);
   }).then(() => {    
-    DisneyAnimal.GetWaitTimes().then((rideTimes) => {
-      wdwData += func.buildWorld('ak', rideTimes);
-    }).catch((error)=>{
-      console.error(error);
-    }).then(() => {
-      DisneyEpcot.GetWaitTimes().then((rideTimes) => {
-        wdwData += func.buildWorld('ep', rideTimes);
-      }).catch((error) => {
-        console.error(error);
-      }).then(() => {
-        DisneyHollywood.GetWaitTimes().then((rideTimes) => {
-          wdwData += func.buildWorld('hw', rideTimes);
-        }).catch((error) => {
-          console.error(error);
-        }).then(() => {
-          wdwData = func.finalCleanWdw(wdwData);
-          setTimeout(wdwTimes, 1000 * 60 * 5); // refresh every 5 minutes
-        })        
-      });
-    });    
-  });
+    setTimeout(mkTimes, 1000 * 60 * 5); // refresh every 5 minutes
+  });        
+};
+const akTimes = () => {
+  akData = ``;
+  DisneyAnimal.GetWaitTimes().then((rideTimes) => {
+    akData += func.buildWorld(rideTimes);
+  }).catch((error) => {
+    console.error(error);
+  }).then(() => {    
+    setTimeout(akTimes, 1000 * 60 * 5); // refresh every 5 minutes
+  });        
+};
+const epTimes = () => {
+  epData = ``;
+  DisneyEpcot.GetWaitTimes().then((rideTimes) => {
+    epData += func.buildWorld(rideTimes);
+  }).catch((error) => {
+    console.error(error);
+  }).then(() => {    
+    setTimeout(epTimes, 1000 * 60 * 5); // refresh every 5 minutes
+  });        
+};
+const hstudTimes = () => {
+  hstudData = ``;
+  DisneyHollywood.GetWaitTimes().then((rideTimes) => {
+    hstudData += func.buildWorld(rideTimes);
+  }).catch((error) => {
+    console.error(error);
+  }).then(() => {    
+    setTimeout(hstudTimes, 1000 * 60 * 5); // refresh every 5 minutes
+  });        
 };
 
-app.get('/wdwtimes', (req, res) => {
+
+
+
+
+
+
+
+app.get('/mktimes', (req, res) => {
   res.statusCode = 200;
-  // Access wait times by Promise
-  //console.log(disneyData);
   res.setHeader('Content-Type', 'text/plain');
-  res.end(wdwData);
+  res.end(mkData);
 });
+
+app.get('/aktimes', (req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end(akData);
+});
+
+app.get('/eptimes', (req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end(epData);
+});
+
+app.get('/hstudtimes', (req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end(hstudData);
+});
+
 
 app.use(function(req, res){
   res.end('Wrong loco');
@@ -66,5 +105,8 @@ app.use(function(req, res){
 
 app.listen(port, () => {
   console.log('Started on port ' + port);
-  wdwTimes();
+  mkTimes();
+  epTimes();
+  hstudTimes();
+  akTimes();
 });
