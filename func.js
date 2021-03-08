@@ -2,7 +2,7 @@ var waitData = (rideTimes) => {
     var tempData = '';
     rideTimes.forEach((ride) => {
         //Grab our ride name
-        var rideName = ride.name.replace('"','').replace('"', '').trim().replace(/(\r\n|\n|\r)/gm, "");
+        var rideName = ride.name.replace('"','').replace('"', '').trim().replace(/(\r\n|\n|\r)/gm, "").replace(/[^\w\s]/gi, '');
         //rideName = rideName.replace('"','').replace('"', '').trim().replace(/(\r\n|\n|\r)/gm, "");
         //Grab our wait time
         var riWait = ride.waitTime;
@@ -10,7 +10,7 @@ var waitData = (rideTimes) => {
         // console.log(riWait);
         //if its temporairly unavailable let me know as well
         if(rideName.indexOf('Temporarily Unavailable') > 0 ){
-            rideName = rideName.replace(' - Temporarily Unavailable', '').trim();
+            rideName = rideName.replace(' Temporarily Unavailable', '').trim();
             riWait = -1;   
         }
         //console.log(riWait);
@@ -24,10 +24,10 @@ var waitData = (rideTimes) => {
     });
     return tempData;
 };
-var buildWorld = (rideTimes) => {
+var buildWorld = (rideTimes, oTime, cTime, tz, fp) => {
     var tempData = '';
     
-    tempData += `{"rides": [`;
+    tempData += `{"opening": "${oTime}", "closing": "${cTime}", "tz": "${tz}", "fp": ${fp}, "rides": [`;
     tempData += waitData(rideTimes);
     //Take our last , out 
     tempData = tempData.substring(0, tempData.length - 1);
@@ -41,10 +41,7 @@ var finalCleanWdw = (mData) => {
     tempData += `}]}`;
 
     return tempData;
-
 }
-
-
 
 
 
