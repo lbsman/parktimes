@@ -1,7 +1,9 @@
 var waitData = (rideTimes) => {
     var tempData = '';
-    //console.log(rideTimes);
+    //sconsole.log(rideTimes);
     //rideTimes.sort(function(a, b){return b-a});
+
+    rideTimes = cleanNames(rideTimes);
 
     rideTimes = rideTimes.sort((a, b) => {
         if (a.waitTime > b.waitTime) { return 1; }
@@ -9,31 +11,7 @@ var waitData = (rideTimes) => {
         return 0;
     })
 
-
-    //console.log(rideTimes);
-    rideTimes.forEach((ride) => {
-        //Grab our ride name
-        var rideName = ride.name.replace('"','').replace('"', '').trim().replace(/(\r\n|\n|\r)/gm, "").replace(/[^\w\s]/gi, '');
-        //rideName = rideName.replace('"','').replace('"', '').trim().replace(/(\r\n|\n|\r)/gm, "");
-        //Grab our wait time
-        var riWait = ride.waitTime;
-        // console.log(rideName);
-        // console.log(riWait);
-        //if its temporairly unavailable let me know as well
-        if(rideName.indexOf('Temporarily Unavailable') > 0 ){
-            rideName = rideName.replace(' Temporarily Unavailable', '').trim();
-            riWait = -1;   
-        }
-        //console.log(riWait);
-        //If it just doesnt have a time let me know
-        if(riWait == null){
-            riWait = -2;
-        }
-        //Form the main section
-        tempData += `{"rideName": "${rideName}", "rideWait": "${riWait}"},`
-            //console.log(`${ride.name}: ${ride.waitTime} minutes wait (${ride.status})`);
-    });
-    return tempData;
+    return makeStuff(rideTimes);
 };
 var buildWorld = (rideTimes, oTime, cTime, tz, fp) => {
     var tempData = '';
@@ -53,7 +31,38 @@ var finalCleanWdw = (mData) => {
 
     return tempData;
 }
+function cleanNames(rideTimes){
+    //console.log(rideTimes);
+    rideTimes.forEach((ride) => {
+        //Grab our ride name
+        ride.name = ride.name.replace('"','').replace('"', '').trim().replace(/(\r\n|\n|\r)/gm, "").replace(/[^\w\s]/gi, '');
+        //if its temporairly unavailable let me know as well
+        if(ride.name.indexOf('Temporarily Unavailable') > 0 ){
+            ride.name = ride.name.replace(' Temporarily Unavailable', '').trim();
+            ride.waitTime = -1;   
+        }
+        //console.log(riWait);
+        //If it just doesnt have a time let me know
+        if(ride.waitTime == null){
+            ride.waitTime = -2;
+        }
+    });
+    return rideTimes;
+}
+function makeStuff(tData){
+    var tempData = '';
+    tData.forEach((ride) => {
+        //Form the main section
+        tempData += `{`;
+        tempData += `"rideName": "${ride.name}",`;
+        tempData += `"rideWait": "${ride.waitTime}",`;
+        tempData += `"fPass": "${ride.fastPass}",`;
+        tempData += `"status": "${ride.status}"`;
+        tempData += `},`;
+    });
 
+    return tempData;
+}
 
 
 

@@ -22,6 +22,8 @@ const DisneyWorldMagicKingdom = new Themeparks.Parks.WaltDisneyWorldMagicKingdom
 const DisneyAnimal = new Themeparks.Parks.WaltDisneyWorldAnimalKingdom();
 const DisneyEpcot = new Themeparks.Parks.WaltDisneyWorldEpcot();
 const DisneyHollywood = new Themeparks.Parks.WaltDisneyWorldHollywoodStudios();
+const UniversalOrlando = new Themeparks.Parks.UniversalStudiosFlorida();
+const UniversalIsOfAd = new Themeparks.Parks.UniversalIslandsOfAdventure();
 
 //console.log(DisneyWorldMagicKingdom.Timezone);
 
@@ -29,6 +31,8 @@ var mkData;
 var akData;
 var epData;
 var hstudData;
+var universaleData;
+var universalIslanData;
 
 const mkTimes = () => {
   mkData = ``;
@@ -78,14 +82,33 @@ const hstudTimes = () => {
     });
   });         
 };
+const uTimesOr = () => {
+  universaleData = ``;
+  UniversalOrlando.GetOpeningTimes().then((oTime)=>{
+    UniversalOrlando.GetWaitTimes().then((rideTimes) => {
+      universaleData += func.buildWorld(rideTimes, oTime[0].openingTime, oTime[0].closingTime, UniversalOrlando.Timezone, UniversalOrlando.FastPass);
+    }).catch((error) => {
+      console.error(error);
+    }).then(() => {    
+      setTimeout(uTimesOr, 1000 * 60 * 5); // refresh every 5 minutes
+    });
+  });         
+};
+const islandTimes = () => {
+  universalIslanData = ``;
+  UniversalIsOfAd.GetOpeningTimes().then((oTime)=>{
+    UniversalIsOfAd.GetWaitTimes().then((rideTimes) => {
+      universalIslanData += func.buildWorld(rideTimes, oTime[0].openingTime, oTime[0].closingTime, UniversalIsOfAd.Timezone, UniversalIsOfAd.FastPass);
+    }).catch((error) => {
+      console.error(error);
+    }).then(() => {    
+      setTimeout(islandTimes, 1000 * 60 * 5); // refresh every 5 minutes
+    });
+  });         
+};
 
 
-
-
-
-
-
-
+//Here are the endpoints for the informations
 app.get('/mktimes', (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
@@ -109,6 +132,16 @@ app.get('/woodtimes', (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
   res.end(hstudData);
 });
+app.get('/universal', (req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end(universaleData);
+});
+app.get('/island', (req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end(universalIslanData);
+});
 
 
 app.use(function(req, res){
@@ -121,4 +154,6 @@ app.listen(port, () => {
     epTimes();
     hstudTimes();
     akTimes();
+    uTimesOr();
+    islandTimes();
 });
