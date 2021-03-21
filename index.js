@@ -117,8 +117,8 @@ app.use(function(req, res){
 
 app.listen(port, () => {
   console.log('Started on port ' + port);
-   mkTimes();
-  epTimes();
-  hstudTimes();
-  akTimes();
+    mkTimes();
+    //epTimes();
+    //hstudTimes();
+    //akTimes();
 });

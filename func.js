@@ -1,5 +1,16 @@
 var waitData = (rideTimes) => {
     var tempData = '';
+    //console.log(rideTimes);
+    //rideTimes.sort(function(a, b){return b-a});
+
+    rideTimes = rideTimes.sort((a, b) => {
+        if (a.waitTime > b.waitTime) { return 1; }
+        if (b.waitTime > a.waitTime) { return -1; }
+        return 0;
+    })
+
+
+    //console.log(rideTimes);
     rideTimes.forEach((ride) => {
         //Grab our ride name
         var rideName = ride.name.replace('"','').replace('"', '').trim().replace(/(\r\n|\n|\r)/gm, "").replace(/[^\w\s]/gi, '');
