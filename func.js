@@ -15,8 +15,8 @@ var waitData = (rideTimes) => {
 };
 var buildWorld = (rideTimes, oTime, cTime, tz, fp) => {
     var tempData = '';
-    
-    tempData += `{"opening": "${oTime}", "closing": "${cTime}", "tz": "${tz}", "fp": ${fp}, "rides": [`;
+    let date_ob = new Date();
+    tempData += `{"updateTime": "${date_ob}", "opening": "${oTime}", "closing": "${cTime}", "tz": "${tz}", "fp": ${fp}, "rides": [`;
     tempData += waitData(rideTimes);
     //Take our last , out 
     tempData = tempData.substring(0, tempData.length - 1);
