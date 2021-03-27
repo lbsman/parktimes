@@ -2,7 +2,7 @@ var waitData = (rideTimes) => {
     var tempData = '';
     //sconsole.log(rideTimes);
     //rideTimes.sort(function(a, b){return b-a});
-
+    
     rideTimes = cleanNames(rideTimes);
 
     rideTimes = rideTimes.sort((a, b) => {
@@ -32,7 +32,6 @@ var finalCleanWdw = (mData) => {
     return tempData;
 }
 function cleanNames(rideTimes){
-    //console.log(rideTimes);
     rideTimes.forEach((ride) => {
         //Grab our ride name
         ride.name = ride.name.replace('"','').replace('"', '').trim().replace(/(\r\n|\n|\r)/gm, "").replace(/[^\w\s]/gi, '');

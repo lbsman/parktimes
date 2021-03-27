@@ -1,0 +1,32 @@
+{
+    "opening": "2021-03-24T08:00:00-04:00",
+    "closing": "2021-03-24T21:00:00-04:00",
+    "tz": "America/New_York",
+    "fp": false,
+    "rides": [
+        {
+            "rideName": "Tomorrowland Speedway",
+            "rideWait": "0",
+            "fPass": "false",
+            "status": "Closed"
+        },
+        {
+            "rideName": "Walt Disneys Carousel of Progress",
+            "rideWait": "0",
+            "fPass": "false",
+            "status": "Closed"
+        },
+        {
+            "rideName": "Country Bear Jamboree",
+            "rideWait": "0",
+            "fPass": "false",
+            "status": "Closed"
+        },
+        {
+            "rideName": "The Hall of Presidents",
+            "rideWait": "0",
+            "fPass": "false",
+            "status": "Refurbishment"
+        }
+    ]
+}

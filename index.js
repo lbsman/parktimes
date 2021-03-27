@@ -24,6 +24,9 @@ const DisneyEpcot = new Themeparks.Parks.WaltDisneyWorldEpcot();
 const DisneyHollywood = new Themeparks.Parks.WaltDisneyWorldHollywoodStudios();
 const UniversalOrlando = new Themeparks.Parks.UniversalStudiosFlorida();
 const UniversalIsOfAd = new Themeparks.Parks.UniversalIslandsOfAdventure();
+const buschWill = new Themeparks.Parks.BuschGardensWilliamsburg();
+const buschTamp = new Themeparks.Parks.BuschGardensTampa();
+const swo = new Themeparks.Parks.SeaworldOrlando();
 
 //console.log(DisneyWorldMagicKingdom.Timezone);
 
@@ -33,12 +36,17 @@ var epData;
 var hstudData;
 var universaleData;
 var universalIslanData;
+var willBusc;
+var tampBusc;
+var swodata;
 
 const mkTimes = () => {
   mkData = ``;
   DisneyWorldMagicKingdom.GetOpeningTimes().then((oTime)=>{
     DisneyWorldMagicKingdom.GetWaitTimes().then((rideTimes) => {
       mkData += func.buildWorld(rideTimes, oTime[0].openingTime, oTime[0].closingTime, DisneyWorldMagicKingdom.Timezone, DisneyWorldMagicKingdom.FastPass);
+      //mkData = '{"opening":"2021-03-24T08:00:00-04:00","closing":"2021-03-24T21:00:00-04:00","tz":"America/New_York","fp":false,"rides":[{"rideName":"Tomorrowland Speedway","rideWait":"0","fPass":"false","status":"Closed"},{"rideName":"Walt Disneys Carousel of Progress","rideWait":"40","fPass":"false","status":"Closed"},{"rideName":"Country Bear Jamboree","rideWait":"0","fPass":"false","status":"Closed"},{"rideName":"The Hall of Presidents","rideWait":"0","fPass":"false","status":"Refurbishment"}]}';
+      //console.log(mkData);
     }).catch((error) => {
       console.error(error);
     }).then(() => {    
@@ -106,6 +114,44 @@ const islandTimes = () => {
     });
   });         
 };
+const buschWilliams = () => {
+  willBusc = ``;
+  buschWill.GetOpeningTimes().then((oTime)=>{
+    buschWill.GetWaitTimes().then((rideTimes) => {
+      willBusc += func.buildWorld(rideTimes, oTime[0].openingTime, oTime[0].closingTime, buschWill.Timezone, buschWill.FastPass);
+    }).catch((error) => {
+      console.error(error);
+    }).then(() => {    
+      setTimeout(buschWilliams, 1000 * 60 * 5); // refresh every 5 minutes
+    });
+  });         
+};
+const buschTampa = () => {
+  tampBusc = ``;
+  buschTamp.GetOpeningTimes().then((oTime)=>{
+    console.log(oTime);
+    buschTamp.GetWaitTimes().then((rideTimes) => {
+      tampBusc += func.buildWorld(rideTimes, oTime[0].openingTime, oTime[0].closingTime, buschTamp.Timezone, buschTamp.FastPass);
+    }).catch((error) => {
+      console.error(error);
+    }).then(() => {    
+      setTimeout(buschTampa, 1000 * 60 * 5); // refresh every 5 minutes
+    });
+  });         
+};
+const swoInfo = () => {
+  swodata = ``;
+  swo.GetOpeningTimes().then((oTime)=>{
+    swo.GetWaitTimes().then((rideTimes) => {
+      swodata += func.buildWorld(rideTimes, oTime[0].openingTime, oTime[0].closingTime, swo.Timezone, buschTamp.FastPass);
+    }).catch((error) => {
+      console.error(error);
+    }).then(() => {    
+      setTimeout(swoInfo, 1000 * 60 * 5); // refresh every 5 minutes
+    });
+  });         
+};
+
 
 
 //Here are the endpoints for the informations
@@ -114,19 +160,16 @@ app.get('/mktimes', (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
   res.end(mkData);
 });
-
 app.get('/aktimes', (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
   res.end(akData);
 });
-
 app.get('/eptimes', (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
   res.end(epData);
 });
-
 app.get('/woodtimes', (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
@@ -142,11 +185,27 @@ app.get('/island', (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
   res.end(universalIslanData);
 });
+app.get('/buschw', (req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end(willBusc);
+});
+app.get('/buschg', (req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end(tampBusc);
+});
+app.get('/swo', (req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end(swodata);
+});
 
 
 app.use(function(req, res){
   res.end('Wrong loco');
 });
+
 
 app.listen(port, () => {
   console.log('Started on port ' + port);
@@ -156,4 +215,12 @@ app.listen(port, () => {
     akTimes();
     uTimesOr();
     islandTimes();
+    buschWilliams();
+    swoInfo();
+
+
+
+
+
+    //buschTampa();
 });
