@@ -42,22 +42,22 @@ var willBusc;
 var swodata;
 var canData; 
 var altonData;
-parkNames = new Array();
-parkNames = ['Magic Kingdom', 'Animal Kingdom', 'Epcot', 'Hollywood Studios', 'Univesal Orlando', 'Universal Island of Adventure',
-            'Universal Volcano Bay', 'Busch Gardens Williamsburg', 'Sea World Orlando', 'Cananada Wonderlannd', 'Altonn Towers'];
-parkArray = new Array();
-parkArray = [DisneyWorldMagicKingdom,DisneyAnimal,DisneyEpcot,DisneyHollywood,
-              UniversalOrlando,UniversalIsOfAd,UniversalBay,buschWill,swo,canwon,alton];
-parkData = new Array();
-parkData = [mkData,akData,epData,hstudData,
-            universaleData,universalIslanData,universalBayData,willBusc,swodata,canData,altonData];
-
 // parkNames = new Array();
-// parkNames = ['Magic Kingdom'];
+// parkNames = ['Magic Kingdom', 'Animal Kingdom', 'Epcot', 'Hollywood Studios', 'Univesal Orlando', 'Universal Island of Adventure',
+//             'Universal Volcano Bay', 'Busch Gardens Williamsburg', 'Sea World Orlando', 'Cananada Wonderlannd', 'Altonn Towers'];
 // parkArray = new Array();
-// parkArray = [DisneyEpcot];
+// parkArray = [DisneyWorldMagicKingdom,DisneyAnimal,DisneyEpcot,DisneyHollywood,
+//               UniversalOrlando,UniversalIsOfAd,UniversalBay,buschWill,swo,canwon,alton];
 // parkData = new Array();
-// parkData = [epData];
+// parkData = [mkData,akData,epData,hstudData,
+//             universaleData,universalIslanData,universalBayData,willBusc,swodata,canData,altonData];
+
+parkNames = new Array();
+parkNames = ['Magic Kingdom'];
+parkArray = new Array();
+parkArray = [DisneyWorldMagicKingdom];
+parkData = new Array();
+parkData = [mkData];
             
 function runInfo(){
   parkArray.forEach(function(element) {

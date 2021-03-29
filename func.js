@@ -46,7 +46,8 @@ function cleanNames(rideTimes, parkName){
         
         //console.log(ride);
         //If it just doesnt have a time let me know
-        if(ride.waitTime == null && ride.status != 'Operating'){
+        //console.log('Ride name : ' + ride.name + ' - Ride wait : ' + ride.waitTime + ' - Ride status : ' + ride.status);
+        if(ride.waitTime == null && ride.status != 'Operating' && ride.status != 'Down'){
             ride.waitTime = -2;
         }else if(parkName == 'Universal Volcano Bay' && ride.waitTime == null){
             ride.waitTime = -1; 
