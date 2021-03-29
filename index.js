@@ -1,7 +1,8 @@
 const http = require('http');
 const express = require('express');
+const path = require('path');
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 const func = require('./func.js');
 const moment = require('moment');
 // include the Themeparks library
@@ -41,7 +42,9 @@ var willBusc;
 var swodata;
 var canData; 
 var altonData;
-
+parkNames = new Array();
+parkNames = ['Magic Kingdom', 'Animal Kingdom', 'Epcot', 'Hollywood Studios', 'Univesal Orlando', 'Universal Island of Adventure',
+            'Universal Volcano Bay', 'Busch Gardens Williamsburg', 'Sea World Orlando', 'Cananada Wonderlannd', 'Altonn Towers'];
 parkArray = new Array();
 parkArray = [DisneyWorldMagicKingdom,DisneyAnimal,DisneyEpcot,DisneyHollywood,
               UniversalOrlando,UniversalIsOfAd,UniversalBay,buschWill,swo,canwon,alton];
@@ -49,11 +52,18 @@ parkData = new Array();
 parkData = [mkData,akData,epData,hstudData,
             universaleData,universalIslanData,universalBayData,willBusc,swodata,canData,altonData];
 
+// parkNames = new Array();
+// parkNames = ['Magic Kingdom'];
+// parkArray = new Array();
+// parkArray = [DisneyEpcot];
+// parkData = new Array();
+// parkData = [epData];
+            
 function runInfo(){
   parkArray.forEach(function(element) {
     element.GetOpeningTimes().then((oTime)=>{
       element.GetWaitTimes().then((rideTimes) => {
-        parkData[parkArray.indexOf(element)] = func.buildWorld(rideTimes, oTime[0].openingTime, oTime[0].closingTime, element.Timezone, element.FastPass);
+        parkData[parkArray.indexOf(element)] = func.buildWorld(rideTimes, oTime[0].openingTime, oTime[0].closingTime, element.Timezone, element.FastPass, parkNames[parkArray.indexOf(element)]);
       }).catch((error) => {
         console.error(error);
       });
@@ -65,6 +75,11 @@ function runInfo(){
 }
 
 //Here are the endpoints for the informations
+app.get('/', (req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/html');
+  res.sendFile(path.join(__dirname+'/formFill.html'));
+});
 app.get('/mktimes', (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
@@ -79,6 +94,7 @@ app.get('/eptimes', (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
   res.end(parkData[2]);
+  //res.end(parkData[0]);
   //res.end(epData);
 });
 app.get('/woodtimes', (req, res) => {
@@ -96,6 +112,7 @@ app.get('/universal', (req, res) => {
 app.get('/island', (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
+  //res.end(parkData[0])
   res.end(parkData[5]);
   //res.end(universalIslanData);
 });
