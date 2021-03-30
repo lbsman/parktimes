@@ -45,7 +45,7 @@ function cleanNames(rideTimes, parkName){
         }
         
         //Remove star wars galaxy edge
-        if(ride.name == 'Star Wars Galaxy Edge'){
+        if(ride.name == 'Star Wars Galaxys Edge'){
             ride.waitTime = -2;
         }
 
