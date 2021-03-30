@@ -13,7 +13,7 @@ var waitData = (rideTimes, parkName) => {
     var tempData = '';
     //sconsole.log(rideTimes);
     //rideTimes.sort(function(a, b){return b-a});
-    
+    console.log(rideTimes);
     rideTimes = cleanNames(rideTimes, parkName);
 
     rideTimes = rideTimes.sort((a, b) => {
@@ -44,10 +44,14 @@ function cleanNames(rideTimes, parkName){
             ride.waitTime = -1;   
         }
         
+        //Remove star wars galaxy edge
+        if(ride.name == 'Star Wars Galaxy Edge'){
+            ride.waitTime = -2;
+        }
+
         //console.log(ride);
         //If it just doesnt have a time let me know
-        //console.log('Ride name : ' + ride.name + ' - Ride wait : ' + ride.waitTime + ' - Ride status : ' + ride.status);
-        if(ride.waitTime == null && ride.status != 'Operating' && ride.status != 'Down'){
+        if(ride.waitTime == null && ride.status != 'Operating'){
             ride.waitTime = -2;
         }else if(parkName == 'Universal Volcano Bay' && ride.waitTime == null){
             ride.waitTime = -1; 
