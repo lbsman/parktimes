@@ -13,7 +13,7 @@ var waitData = (rideTimes, parkName) => {
     var tempData = '';
     //sconsole.log(rideTimes);
     //rideTimes.sort(function(a, b){return b-a});
-    console.log(rideTimes);
+    //console.log(rideTimes);
     rideTimes = cleanNames(rideTimes, parkName);
 
     rideTimes = rideTimes.sort((a, b) => {
@@ -65,6 +65,9 @@ function cleanNames(rideTimes, parkName){
         } catch (error) {
             ride.waitTime = ride.waitTime;
         }
+        if(ride.waitTime == null){
+            ride.waitTime = '-1';
+        }
         //console.log(ride.name + ' : ' + ride.meta.type + ' : ' + ride.waitTime);
     });
     return rideTimes;
@@ -78,7 +81,8 @@ function makeStuff(tData){
         tempData += `"rideName": "${ride.name}",`;
         tempData += `"rideWait": "${ride.waitTime}",`;
         tempData += `"fPass": "${ride.fastPass}",`;
-        tempData += `"status": "${ride.status}"`;
+        tempData += `"status": "${ride.status}",`;
+        tempData += `"rideId": "${ride.id}"`;
         try {
             tempData += `,"type": "${ride.meta.type}"`;    
         } catch (error) {
