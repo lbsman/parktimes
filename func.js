@@ -36,15 +36,31 @@ var finalCleanWdw = (mData) => {
 
 function cleanNames(rideTimes, parkName){
     rideTimes.forEach((ride) => {
+
+        //console.log('Ride name : ' + ride.name + ' - Ride Status : ' + ride.status + ' - Ride Wait : ' + ride.waitTime);
+
         //Grab our ride name
         ride.name = ride.name.replace('"','').replace('"', '').trim().replace(/(\r\n|\n|\r)/gm, "").replace(/[^\w\s]/gi, '');
+
         //if its temporairly unavailable let me know as well
         if(ride.name.indexOf('Temporarily Unavailable') > 0 ){
             ride.name = ride.name.replace(' Temporarily Unavailable', '').trim();
-            ride.waitTime = -1;   
+            ride.waitTime = '-1';   
         }
-        
-        //Remove star wars galaxy edge
+
+        if(ride.status == 'Closed' && parkName != 'Sea World Orlando'){
+            ride.waitTime = '-5';
+        }else if(parkName == 'Sea World Orlando'){
+            ride.waitTime = '-4';
+        }
+
+        if(ride.status == 'Refurbishment'){
+            ride.waitTime = '-4';
+        }else if(ride.status == 'Down'){
+            ride.waitTimes = '-3'
+        }
+
+        //Reemove star wars galaxy edge
         if(ride.name == 'Star Wars Galaxys Edge'){
             ride.waitTime = -2;
         }
@@ -60,16 +76,27 @@ function cleanNames(rideTimes, parkName){
             //console.log(ride.name + ' : ' + ride.meta.type);
             if(ride.meta.type == 'RESTAURANT'){
                 ride.waitTime = '-2';
-                //console.log('Going here');
             }
         } catch (error) {
             ride.waitTime = ride.waitTime;
         }
+
         if(ride.waitTime == null && ride.status == 'Operating'){
             ride.waitTime = '0';
-        }else if(ride.waitTime == null){
+        }else if(ride.waitTime == null && (ride.status != 'Refurbishment' && ride.status != 'Down')){
             ride.waitTime = '-1';
         }
+
+        //Checking if it's the railroad, if it is mark as -1
+        if(ride.name.toUpperCase().indexOf('RAILROAD') > 0 ){
+            ride.waitTime = '-1';   
+            ride.status = 'Closed';
+        }else if(ride.name.toUpperCase().indexOf('MEET ') || ride.name.toUpperCase().indexOf('SORCERERS OF THE MAGIC KINGDOM')){
+            ride.waitTime = '-1';   
+            ride.status = 'Closed';
+        }
+
+        //console.log('Ride name : ' + ride.name + ' - Ride Status : ' + ride.status + ' - Ride Wait : ' + ride.waitTime);
         //console.log(ride.name + ' : ' + ride.meta.type + ' : ' + ride.waitTime);
     });
     return rideTimes;
