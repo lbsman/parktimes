@@ -65,7 +65,9 @@ function cleanNames(rideTimes, parkName){
         } catch (error) {
             ride.waitTime = ride.waitTime;
         }
-        if(ride.waitTime == null){
+        if(ride.waitTime == null && ride.status == 'Operating'){
+            ride.waitTime = '0';
+        }else if(ride.waitTime == null){
             ride.waitTime = '-1';
         }
         //console.log(ride.name + ' : ' + ride.meta.type + ' : ' + ride.waitTime);
