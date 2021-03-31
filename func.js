@@ -91,12 +91,21 @@ function cleanNames(rideTimes, parkName){
         if(ride.name.toUpperCase().indexOf('RAILROAD') > 0 ){
             ride.waitTime = '-1';   
             ride.status = 'Closed';
-        }else if(ride.name.toUpperCase().indexOf('MEET ') || ride.name.toUpperCase().indexOf('SORCERERS OF THE MAGIC KINGDOM')){
+        }else if(ride.name.toUpperCase().indexOf('MEET ') >= 0 && ride.status == 'Closed'){
+            ride.waitTime = '-1';   
+            ride.status = 'Closed';
+        }else if(ride.name.toUpperCase().indexOf('SORCERERS OF THE MAGI') >= 0){
+            ride.waitTime = '-1';   
+            ride.status = 'Closed';
+        }else if(ride.name.toUpperCase().indexOf('A PIRATES ADVENTU') >= 0 && ride.status.trim().toUpperCase() == 'CLOSED' ){
+            ride.waitTime = '-1';   
+            ride.status = 'Closed';
+        }else if(ride.name.toUpperCase().indexOf('ENCHANTED TALES WITH BELLE') >= 0 && ride.status == 'Closed' ){
             ride.waitTime = '-1';   
             ride.status = 'Closed';
         }
-
-        //console.log('Ride name : ' + ride.name + ' - Ride Status : ' + ride.status + ' - Ride Wait : ' + ride.waitTime);
+        
+        //console.log('Ride name : ' + ride.name + ' - Ride Status : ' + ride.status + ' - Ride Wait : ' + ride.waitTime + ' - Index : ' + ride.name.toUpperCase().indexOf('A Pirates Adventu'));
         //console.log(ride.name + ' : ' + ride.meta.type + ' : ' + ride.waitTime);
     });
     return rideTimes;
