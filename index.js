@@ -59,10 +59,13 @@ parkData = [mkData,akData,epData,hstudData,
 // parkData = [mkData];
             
 function runInfo(){
+  
   parkArray.forEach(function(element) {
+    var tempData = '';
     element.GetOpeningTimes().then((oTime)=>{
       element.GetWaitTimes().then((rideTimes) => {
-        parkData[parkArray.indexOf(element)] = func.buildWorld(rideTimes, oTime[0].openingTime, oTime[0].closingTime, element.Timezone, element.FastPass, parkNames[parkArray.indexOf(element)]);
+        tempData = func.buildWorld(rideTimes, oTime[0].openingTime, oTime[0].closingTime, element.Timezone, element.FastPass, parkNames[parkArray.indexOf(element)]);
+        parkData[parkArray.indexOf(element)] = tempData;
       }).catch((error) => {
         console.error(error);
       });

@@ -88,7 +88,7 @@ function cleanNames(rideTimes, parkName){
         }
 
         //Checking if it's the railroad, if it is mark as -1
-        if(ride.name.toUpperCase().indexOf('RAILROAD') > 0 ){
+        if(ride.name.toUpperCase().indexOf('RAILROAD') > 0 && ride.name.toUpperCase().indexOf('BIG') != 0){
             ride.waitTime = '-1';   
             ride.status = 'Closed';
         }else if(ride.name.toUpperCase().indexOf('MEET ') >= 0 && ride.status == 'Closed'){
