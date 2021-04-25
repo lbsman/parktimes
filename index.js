@@ -14,6 +14,9 @@ Themeparks.Settings.CacheWaitTimesLength = 120;
 // configure where SQLite DB sits
 // optional - will be created in node working directory if not configured
 // Themeparks.Settings.Cache = __dirname + "/themeparks.db";
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // access a specific park
 //  Create this *ONCE* and re-use this object for the lifetime of your application
@@ -150,9 +153,89 @@ app.get('/alton', (req, res) => {
   //res.end(canData);
 });
 
-// app.use(function(req, res){
-//   res.end('Wrong loco');
-// });
+///////////////////////////////////////////
+////Weightloss competition application////
+/////////////////////////////////////////
+app.get('/wlcomp', (req,res)=>{
+  res.status = 200;
+  res.setHeader('Content-Type', 'text/json');
+
+  var databases = getData();
+  var tInfo = returnGet(databases);
+  res.end(tInfo);
+
+});
+app.post('/wlcomp', (req,res)=>{
+  res.setHeader('Content-Type', 'text/json');
+
+  var dBstuff = getData();
+  var tInfo = updateWeight(dBstuff, req);
+
+  res.status = 200;
+  res.end(tInfo);
+});
+
+function getData(){
+  const fs = require('fs');
+  const data = fs.readFileSync('wlcomp.json');
+
+  // parse JSON string to JSON object
+  const databases = JSON.parse(data);
+
+  return databases;
+}
+
+function returnGet(dbInfo){
+  var tInfo = `[`;
+  dbInfo.forEach(db =>{
+    tInfo += `{"pName":"${db.pName}", "start":"${db.start}", "cur":"${db.cur}"},`;
+  });
+  tInfo = tInfo.substr(0,tInfo.length - 1);
+  tInfo += `]`;
+  return tInfo;
+}
+
+function writeToFile(tData){
+  const fs = require('fs');
+  fs.writeFile('wlcomp.json', tData, (err) => {
+    // throws an error, you could also catch it here
+    if (err) throw err;
+
+    // success case, the file was saved
+    console.log('data saved!');
+  });
+}
+
+function updateWeight(dBstuff, req){
+
+  var tInfo = `[`;
+  dBstuff.forEach(db => {
+    if(db.pName == req.query.who){
+      tInfo += `{"pName":"${db.pName}", `;
+      if(req.query.type == 'start'){
+        tInfo += ` "start":"${req.query.weight}", `;
+        tInfo += ` "cur":"${db.cur}"},`;
+      }else if(req.query.type == 'cur'){
+        tInfo += ` "start":"${db.start}", `;
+        tInfo += ` "cur":"${req.query.weight}"},`;  
+      }
+      //tInfo += ` "start":"${db.start}", "cur":"${db.cur}"},`;  
+    }else{
+      tInfo += `{"pName":"${db.pName}", "start":"${db.start}", "cur":"${db.cur}"},`;
+    }
+    
+  });
+  tInfo = tInfo.substr(0,tInfo.length - 1);
+  tInfo += `]`;
+  writeToFile(tInfo);
+  return tInfo;
+}
+
+
+
+app.use(function(req, res){
+  res.end('Wrong loco');
+});
 
 app.listen(port, () => {
   console.log('Started on port ' + port);
