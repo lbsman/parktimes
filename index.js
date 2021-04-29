@@ -25,6 +25,8 @@ const DisneyWorldMagicKingdom = new Themeparks.Parks.WaltDisneyWorldMagicKingdom
 const DisneyAnimal = new Themeparks.Parks.WaltDisneyWorldAnimalKingdom();
 const DisneyEpcot = new Themeparks.Parks.WaltDisneyWorldEpcot();
 const DisneyHollywood = new Themeparks.Parks.WaltDisneyWorldHollywoodStudios();
+const DisneyCali = new Themeparks.Parks.DisneylandResortMagicKingdom();
+const DisneyCaA = new Themeparks.Parks.DisneylandResortCaliforniaAdventure();
 const UniversalOrlando = new Themeparks.Parks.UniversalStudiosFlorida();
 const UniversalIsOfAd = new Themeparks.Parks.UniversalIslandsOfAdventure();
 const UniversalBay = new Themeparks.Parks.UniversalVolcanoBay();
@@ -44,14 +46,19 @@ var willBusc;
 var swodata;
 var canData; 
 var altonData;
+var dLand;
+var dCaA;
+
 parkNames = new Array();
-parkNames = ['Magic Kingdom', 'Animal Kingdom', 'Epcot', 'Hollywood Studios', 'Univesal Orlando', 'Universal Island of Adventure',
+parkNames = ['Magic Kingdom', 'Animal Kingdom', 'Epcot', 'Hollywood Studios', 'Disneyland', 'California Adventure','Univesal Orlando', 'Universal Island of Adventure',
             'Universal Volcano Bay', 'Busch Gardens Williamsburg', 'Sea World Orlando', 'Cananada Wonderlannd', 'Altonn Towers'];
+
 parkArray = new Array();
 parkArray = [DisneyWorldMagicKingdom,DisneyAnimal,DisneyEpcot,DisneyHollywood,
-              UniversalOrlando,UniversalIsOfAd,UniversalBay,buschWill,swo,canwon,alton];
+              DisneyCali, DisneyCaA, UniversalOrlando,UniversalIsOfAd,UniversalBay,buschWill,swo,canwon,alton];
+
 parkData = new Array();
-parkData = [mkData,akData,epData,hstudData,
+parkData = [mkData,akData,epData,hstudData, dLand, dCaA,
             universaleData,universalIslanData,universalBayData,willBusc,swodata,canData,altonData];
 
 // parkNames = new Array();
@@ -62,7 +69,6 @@ parkData = [mkData,akData,epData,hstudData,
 // parkData = [mkData];
             
 function runInfo(){
-  
   parkArray.forEach(function(element) {
     var tempData = '';
     element.GetOpeningTimes().then((oTime)=>{
@@ -109,47 +115,59 @@ app.get('/woodtimes', (req, res) => {
   res.end(parkData[3]);
   //res.end(hstudData);
 });
-app.get('/universal', (req, res) => {
+app.get('/disneyland', (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
   res.end(parkData[4]);
+  //res.end(hstudData);
+});
+app.get('/californiaadventure', (req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end(parkData[5]);
+  //res.end(hstudData);
+});
+app.get('/universal', (req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end(parkData[6]);
   //res.end(universaleData);
 });
 app.get('/island', (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
   //res.end(parkData[0])
-  res.end(parkData[5]);
+  res.end(parkData[7]);
   //res.end(universalIslanData);
 });
 app.get('/volcanobay', (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
-  res.end(parkData[6]);
+  res.end(parkData[8]);
   //res.end(universalIslanData);
 });
 app.get('/buschw', (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
-  res.end(parkData[7]);
+  res.end(parkData[9]);
   //res.end(willBusc);
 });
 app.get('/swo', (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
-  res.end(parkData[8]);
+  res.end(parkData[10]);
   //res.end(swodata);
 });
 app.get('/canwon', (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
-  res.end(parkData[9]);
+  res.end(parkData[11]);
   //res.end(canData);
 });
 app.get('/alton', (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
-  res.end(parkData[10]);
+  res.end(parkData[12]);
   //res.end(canData);
 });
 
