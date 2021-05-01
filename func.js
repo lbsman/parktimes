@@ -136,7 +136,7 @@ let bot;
 
 if(process.env.NODE_ENV == 'production'){
     bot = new TelegramBot('1756957219:AAH5vopV3EmHJ0bWIc8Ktblcsd12IOGvKUY');
-    bot.setWebHook(process.env.HEROKU_URL + bot.token);
+    bot.setWebHook(process.env.APP_URL || 'https://jwparktimes.herokuapp.com:443');
 }else{
     bot = new TelegramBot('1756957219:AAH5vopV3EmHJ0bWIc8Ktblcsd12IOGvKUY', {polling: true});
 }
@@ -161,7 +161,7 @@ bot.on('message', (msg) => {
 
     var info = "/info";
     if(msg.text.toString().toLowerCase().includes(info)){
-        console.log(msg);
+        //console.log(msg);
         bot.sendMessage(msg.chat.id, `🚀 Welcome to the awesome world 🚀 \r\n @${msg.chat.first_name.toString()}`);
     }else{
         // send a message to the chat acknowledging receipt of their message
