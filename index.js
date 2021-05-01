@@ -262,15 +262,18 @@ function updateWeight(dBstuff, req){
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const TelegramBot = require('node-telegram-bot-api');
 
-const token = process.env.TELEGRAM_TOKEN;
-let bot;
+const TOKEN = process.env.TELEGRAM_TOKEN || '1756957219:AAH5vopV3EmHJ0bWIc8Ktblcsd12IOGvKUY';
+const TelegramBot = require('node-telegram-bot-api');
+const options = {
+  webHook: {
+    port: process.env.PORT
+  }
+};
 
-if(process.env.NODE_ENV == 'production'){
-    bot = new TelegramBot(token);
-    bot.setWebHook(process.env.HEROKU_URL + bot.token);
-}else{
-    bot = new TelegramBot('1756957219:AAH5vopV3EmHJ0bWIc8Ktblcsd12IOGvKUY', {polling: true});
-}
+const url = process.env.APP_URL || `https://https://jwparktimes.herokuapp.com:${port}`;
+const bot = new TelegramBot(TOKEN, options);
+
+bot.setWebHook(`${url}/bot${TOKEN}`);
 
 // Matches "/echo [whatever]"
 bot.onText(/\/echo (.+)/, (msg, match) => {
