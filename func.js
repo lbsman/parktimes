@@ -135,8 +135,8 @@ const token = process.env.TELEGRAM_TOKEN;
 let bot;
 
 if(process.env.NODE_ENV == 'production'){
-    bot = new TelegramBot('1756957219:AAH5vopV3EmHJ0bWIc8Ktblcsd12IOGvKUY');
-    bot.setWebHook(process.env.APP_URL || 'https://jwparktimes.herokuapp.com:443');
+    bot = new TelegramBot(token);
+    bot.setWebHook(process.env.HEROKU_URL + bot.token);
 }else{
     bot = new TelegramBot('1756957219:AAH5vopV3EmHJ0bWIc8Ktblcsd12IOGvKUY', {polling: true});
 }
