@@ -286,7 +286,7 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
 // messages.
 bot.on('message', (msg) => {
     const chatId = msg.chat.id;
-
+    console.log(msg.text.toString().toLowerCase());
     var info = "/info";
     if(msg.text.toString().toLowerCase().includes(info)){
         //console.log(msg);
