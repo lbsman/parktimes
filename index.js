@@ -260,42 +260,45 @@ function updateWeight(dBstuff, req){
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const TelegramBot = require('node-telegram-bot-api');
-const token = '1756957219:AAH5vopV3EmHJ0bWIc8Ktblcsd12IOGvKUY';
-const bot = new TelegramBot(token, {polling: true});
+// const TelegramBot = require('node-telegram-bot-api');
+// const token = '1756957219:AAH5vopV3EmHJ0bWIc8Ktblcsd12IOGvKUY';
+// const bot = new TelegramBot(token, {polling: true});
 
-// const url = process.env.APP_URL || `https://jwparktimes.herokuapp.com:`;
-// const bot = new TelegramBot(TOKEN, options);
+// // const url = process.env.APP_URL || `https://jwparktimes.herokuapp.com:`;
+// // const bot = new TelegramBot(TOKEN, options);
 
-// bot.setWebHook(`${url}/bot${TOKEN}`);
+// // bot.setWebHook(`${url}/bot${TOKEN}`);
 
-// Matches "/echo [whatever]"
-bot.onText(/\/echo (.+)/, (msg, match) => {
-    // 'msg' is the received Message from Telegram
-    // 'match' is the result of executing the regexp above on the text content
-    // of the message
+// // Matches "/echo [whatever]"
+// bot.onText(/\/echo (.+)/, (msg, match) => {
+//     // 'msg' is the received Message from Telegram
+//     // 'match' is the result of executing the regexp above on the text content
+//     // of the message
 
-    const chatId = msg.chat.id;
-    const resp = match[1]; // the captured "whatever"
+//     const chatId = msg.chat.id;
+//     const resp = match[1]; // the captured "whatever"
 
-    // send back the matched "whatever" to the chat
-    bot.sendMessage(chatId, resp);
-});
+//     // send back the matched "whatever" to the chat
+//     bot.sendMessage(chatId, resp);
+// });
 
-// Listen for any kind of message. There are different kinds of
-// messages.
-bot.on('message', (msg) => {
-    const chatId = msg.chat.id;
-    console.log(msg.text.toString().toLowerCase());
-    var info = "/info";
-    if(msg.text.toString().toLowerCase().includes(info)){
-        //console.log(msg);
-        bot.sendMessage(msg.chat.id, `🚀 Welcome to the awesome world 🚀 \r\n @${msg.chat.first_name.toString()}`);
-    }else{
-        // send a message to the chat acknowledging receipt of their message
-        bot.sendMessage(chatId, 'Received your message');
-    }    
-});
+// // Listen for any kind of message. There are different kinds of
+// // messages.
+// bot.on('message', (msg) => {
+//     const chatId = msg.chat.id;
+//     console.log(msg.text.toString().toLowerCase());
+//     var info = "/info";
+//     if(msg.text.toString().toLowerCase().includes(info)){
+//       console.log(msg);
+//       bot.sendMessage(msg.chat.id, `🚀 Welcome to the awesome world 🚀 \r\n @${msg.chat.first_name.toString()}`);
+//     }else if(msg.text.toString().toLowerCase().includes('hi')){
+//       console.log(msg);
+//       bot.sendMessage(msg.chat.id, `Hi @${msg.chat.first_name.toString()}`);
+//     }else{
+//       // send a message to the chat acknowledging receipt of their message
+//       bot.sendMessage(chatId, 'Received your message');
+//     }    
+// });
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
